@@ -542,3 +542,73 @@ df_global_popular_games.write.jdbc(url=url, table="steam_recommendation.global_r
 # |       Killing Floor| 2371501|       1250|http://cdn.akamai...|
 # +--------------------+--------+-----------+--------------------+
 ```
+
+## 4 Web UI
+
+In this phase, we are going to implement a Web UI to present the recommendation results. The Web framework we are using is called Flaskr, which provides a simple interface for dynamically generating responses to web requests.
+Before you start, be sure to read through the Flaskr tutorial in here http://flask.pocoo.org/docs/0.12/tutorial/ . That can help you gain more understanding in what Flaskr is and how Flaskr is organized.
+
+### 4.1 Config DataBase Connection
+First of all, I need to install and config all the dependencies that I need on the EC2 instance, like apache2, python environment, flask, SQLAlchemy...
+
+Then I have to modify the configuration of MySQL DB on AWS RDS to allow other IPs to remote connect to the DB.
+
+The final thing is deploying my web UI code.
+
+```python
+from flask import Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
+import re
+
+app = Flask(__name__)
+DB_URI = 'mysql://XXXX'
+app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+class recommendation_global(db.Model):
+    __tablename__ = 'global_recommend'
+    rank = db.Column('rank', db.Integer, primary_key = True)
+    name = db.Column('name', db.Text)
+    header_image = db.Column('header_image', db.Text)
+    steam_appid = db.Column('steam_appid', db.Integer)
+
+    def __init__(self, rank, name, header_image, steam_appid):
+        self.rank = rank
+        self.name = name
+        self.header_image = header_image
+        self.steam_appid = steam_appid
+
+class recommendation(db.Model):
+    __tablename__ = 'final_recommend'
+    user_id = db.Column('user_id', db.Text, primary_key = True)
+    rank = db.Column('rank', db.Integer, primary_key = True)
+    name = db.Column('name', db.Text)
+    header_image = db.Column('header_image', db.Text)
+    steam_appid = db.Column('steam_appid', db.Integer)
+
+    def __init__(self, user_id, rank, name, header_image, steam_appid):
+        self.user_id = user_id
+        self.rank = rank
+        self.name = name
+        self.header_image = header_image
+        self.steam_appid = steam_appid
+
+@app.route('/')
+def global_recommendation():
+    global_recom = recommendation_global.query.order_by(recommendation_global.rank).all()
+    return render_template("index.html", global_recom=global_recom)
+
+@app.route('/<user_id>')
+def user_recommendation(user_id):
+    user_recom = recommendation.query.filter_by(user_id=user_id).order_by(recommendation.rank).all()
+    return render_template("user.html", user_recom = user_recom)
+
+if __name__ == '__main__':
+    app.run()
+```
+
+<p align="center">
+<img src="image/gameRecommendation2.png"  style="width: 600px;"/>
+</p>

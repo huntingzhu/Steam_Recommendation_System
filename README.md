@@ -5,6 +5,8 @@
 <img src="image/games.png"  style="width: 600px;"/>
 </p>
 
+**Keyword: Recommendation System, Collaborative Filtering, Spark, Hive, Flask, Web Crawler, AWS EC2, AWS RDS**
+
 ### 1.1 Introduction
 Recommender systems have become increasingly popular in recent years, and are utilized in a variety of areas including movies, music, news, books, research articles, search queries, social tags, and products in general.
 

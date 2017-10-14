@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+
+
+    <!-- Meta info -->
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommended Games</title>
+    <meta content="" name="description">
+    <meta name="author" content="">
+    <meta name="format-detection" content="">
+
+    <!-- Styles -->
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600' rel='stylesheet' type='text/css'>
+    <link href="{{ url_for('static', filename="main.css") }}" rel="stylesheet" media="screen, print" type="text/css">
+    <script src="{{ url_for('static', filename="modernizr-2.6.2.js") }}" type="text/javascript"></script>
+</head>
+<body>
+    <div id="container" style="left: 0px;">
+        <section id="content">
+
+<header>
+    <div id="pfd">
+        <a href="index.html">
+            <img src="{{ url_for('static', filename="header_logo.ico") }}" style="width:120px;height:120px;", alt="Comestime Website">
+        </a>
+    </div>
+    <div id="preamble" class="home">
+        <div class="preamble">
+	<h1>
+		Recommended games for Steam user ({{ user_recom[0].user_id }}) using collaborative-filtering algorithm. Sounds exciting, huh? We get each user 10 recommendations, and users can explore more by clicking the game header image</h1>
+	<p class="em" style="display: none;">
+		Contact me by <a href="mailto:huntingzhu@gmail.com">writing me an email</a></p>
+	<a class="read-more" href="http://stanford.edu/~rezab/classes/cme323/S15/notes/lec14.pdf">Read more +</a></div>
+<p>&nbsp;
+	</p>
+
+    </div>
+</header>
+<div id="our-work">
+    <ul>
+        {% for item in user_recom %}
+            <li>
+                <a href="http://steamcommunity.com/app/{{ item.steam_appid }}">
+                    <img src={{ item.header_image }} style="width:450px;height:360px;" alt="{{ item.name }}">
+                    <div class="overlay">
+                    <summary>
+                        <h2></h2>
+                        <h3></h3>
+                    </summary>
+                    <div class="loves">
+                    <span>65</span>
+                    </div></div>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+</section>
+
+       <footer id="msf">
+            <div class="wrapper">
+                <ul id="lets-be-social">
+                    <li>
+                        <a href="https://www.facebook.com/hongzhao.zhu" rel="external" target="_blank" title="Be Hongzhao's Facebook friend">Facebook.</a>
+                    </li>
+                    <li>
+                        <a href="http://www.linkedin.com/in/hongzhao-zhu-a7bb47123/" rel="external" target="_blank" title="Hongzhao's LinkedIn Profile">LinkedIn.</a>
+                    </li>
+                </ul>
+
+            </div><!-- wrapper -->
+        </footer><!-- footer -->
+    </div><!-- container -->
+
+
+    <nav id="toc">
+        <ul>
+            <li>
+                <a class="active" href="index.html">Work.</a></li>
+            <li>
+                <a href="about.html">About.</a></li>
+            <li>
+                <a href="what-we-do.html">What we do.</a></li>
+        </ul>
+	</nav>
+
+
+    <div id="no-script">
+        <div>
+            <p>
+                The Pyaari website is fully responsive and requires Javascript.<br>
+                Please <a href="http://enable-javascript.com/">enable javascript</a> to use this site without issue.</p>
+        </div>
+    </div><!-- no-script -->
+
+
+    <script src="{{ url_for('static', filename="jquery-1.11.0.min.js") }}"></script>
+    <script src="{{ url_for('static', filename="pyaari-main.1.0.js") }}"></script>
+    <script src="{{ url_for('static', filename="scripts/pyaari-menu.1.0.js") }}"></script>
+    <script>
+        $(document).ready(function () {
+            PfdMenu._ctor();
+        });
+    </script>
+
+
+    <script>
+    	$(document).ready(function(){
+	       ReadMore.init();
+    	})
+    </script>
+
+
+</body>
+</html>
